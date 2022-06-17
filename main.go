@@ -96,6 +96,7 @@ func (g *Game) Update() error {
 		if ebiten.IsKeyPressed(ebiten.KeyK) {
 			g.hero.Positive = true
 		}
+		g.hero.Update(g.magnet)
 	}
 	return nil
 }

@@ -21,3 +21,22 @@ func (b *Bubble) DrawOn(screen *ebiten.Image) {
 		screen.DrawImage(b.NegativeImage, o)
 	}
 }
+
+func (b *Bubble) Update(m *Magnet) {
+	b.Params.Y += b.Params.VY
+	if m.Positive {
+		switch b.Positive {
+		case true:
+			b.Params.VY -= 0.05
+		case false:
+			b.Params.VY += 0.05
+		}
+	} else {
+		switch b.Positive {
+		case true:
+			b.Params.VY += 0.05
+		case false:
+			b.Params.VY -= 0.05
+		}
+	}
+}
