@@ -20,10 +20,6 @@ func (b *Bubble) DrawOn(screen *ebiten.Image) {
 	}
 }
 
-func (b *Bubble) Die() {
-	b.Params.Alive = false
-}
-
 func (b *Bubble) Update(m *Magnet) {
 	b.Params.Y += b.Params.VY
 	if m.Positive {
@@ -42,6 +38,6 @@ func (b *Bubble) Update(m *Magnet) {
 		}
 	}
 	if b.Params.Y <= 0 || b.Params.Y >= ScreenHeight {
-		b.Die()
+		b.Params.Die()
 	}
 }

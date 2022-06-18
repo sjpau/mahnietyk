@@ -93,7 +93,7 @@ func (g *Game) Update() error {
 			g.mode = ModeRetry
 		}
 		if g.bubble.Params.CollideWith(&g.magnet.Params) {
-			g.bubble.Die()
+			g.bubble.Params.Die()
 		}
 		g.bubble.Update(g.magnet)
 	case ModeRetry:
