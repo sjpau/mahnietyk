@@ -27,16 +27,22 @@ func (b *Bubble) Update(m *Magnet) {
 	if m.Positive {
 		switch b.Positive {
 		case true:
-			b.Params.VY -= 0.05
-		case false:
 			b.Params.VY += 0.05
+		case false:
+			b.Params.VY -= 0.05
 		}
 	} else {
 		switch b.Positive {
 		case true:
-			b.Params.VY += 0.05
-		case false:
 			b.Params.VY -= 0.05
+		case false:
+			b.Params.VY += 0.05
 		}
+	}
+	/*	if tx < 0 || ty < 0 || tx >= world.SectionWidth/TileWidth || ty >= world.ScreenHeight/TileWidth {
+		continue // Offscreen
+						}*/
+	if b.Params.Y <= 0 || b.Params.Y >= ScreenHeight {
+		b.Params.Alive = false
 	}
 }
