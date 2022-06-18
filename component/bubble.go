@@ -7,8 +7,6 @@ type Bubble struct {
 	PositiveImage *ebiten.Image
 	NegativeImage *ebiten.Image
 	Positive      bool
-	Width         int
-	Height        int
 }
 
 func (b *Bubble) DrawOn(screen *ebiten.Image) {
@@ -20,6 +18,10 @@ func (b *Bubble) DrawOn(screen *ebiten.Image) {
 	} else {
 		screen.DrawImage(b.NegativeImage, o)
 	}
+}
+
+func (b *Bubble) Die() {
+	b.Params.Alive = false
 }
 
 func (b *Bubble) Update(m *Magnet) {
@@ -39,10 +41,7 @@ func (b *Bubble) Update(m *Magnet) {
 			b.Params.VY += 0.05
 		}
 	}
-	/*	if tx < 0 || ty < 0 || tx >= world.SectionWidth/TileWidth || ty >= world.ScreenHeight/TileWidth {
-		continue // Offscreen
-						}*/
 	if b.Params.Y <= 0 || b.Params.Y >= ScreenHeight {
-		b.Params.Alive = false
+		b.Die()
 	}
 }

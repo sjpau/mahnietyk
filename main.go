@@ -19,7 +19,7 @@ const (
 type Game struct {
 	mode Mode
 
-	hero   *component.Bubble
+	bubble *component.Bubble
 	magnet *component.Magnet
 }
 
@@ -36,24 +36,24 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	o := &ebiten.DrawImageOptions{}
 	o.GeoM.Scale(1, 1)
 	screen.DrawImage(assets.BgImage, o)
-	g.hero.DrawOn(screen)
+	g.bubble.DrawOn(screen)
 	g.magnet.DrawOn(screen)
 }
 
 func (g *Game) InitObjects() {
 
-	if g.hero == nil {
-		g.hero = &component.Bubble{
+	if g.bubble == nil {
+		g.bubble = &component.Bubble{
 			PositiveImage: assets.PositiveImage,
 			NegativeImage: assets.NegativeImage,
-			Width:         component.TileSize,
-			Height:        component.TileSize,
 			Positive:      true,
 			Params: component.Object{
 				X:      (component.ScreenWidth - component.TileSize) / 2 / component.TileSize,
 				Y:      (component.ScreenHeight - component.TileSize) / 2,
 				Alive:  true,
 				CanDie: true,
+				Width:  component.TileSize,
+				Height: component.TileSize,
 			},
 		}
 	}
@@ -61,14 +61,14 @@ func (g *Game) InitObjects() {
 		g.magnet = &component.Magnet{
 			MagnetPositiveImage: assets.MagnetPositiveImage,
 			MagnetNegativeImage: assets.MagnetNegativeImage,
-			Width:               component.TileSize,
-			Height:              component.TileSize,
 			Positive:            true,
 			Params: component.Object{
 				X:      (component.ScreenWidth - component.TileSize) / 2 / component.TileSize,
 				Y:      (component.ScreenHeight - component.TileSize) / 2 / component.TileSize,
 				Alive:  true,
 				CanDie: false,
+				Width:  component.TileSize,
+				Height: component.TileSize,
 			},
 		}
 	}
@@ -84,17 +84,20 @@ func (g *Game) Update() error {
 		}
 	case ModeGame:
 		if ebiten.IsKeyPressed(ebiten.KeyJ) {
-			g.hero.Positive = false
+			g.bubble.Positive = false
 		}
 		if ebiten.IsKeyPressed(ebiten.KeyK) {
-			g.hero.Positive = true
+			g.bubble.Positive = true
 		}
-		if g.hero.Params.Alive == false {
+		if g.bubble.Params.Alive == false {
 			g.mode = ModeRetry
 		}
-		g.hero.Update(g.magnet)
+		if g.bubble.Params.CollideWith(&g.magnet.Params) {
+			g.bubble.Die()
+		}
+		g.bubble.Update(g.magnet)
 	case ModeRetry:
-		g.hero = nil
+		g.bubble = nil
 		g.magnet = nil
 		g.InitObjects()
 		g.mode = ModeStart

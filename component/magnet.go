@@ -7,8 +7,6 @@ type Magnet struct {
 	MagnetPositiveImage *ebiten.Image
 	MagnetNegativeImage *ebiten.Image
 	Positive            bool
-	Width               int
-	Height              int
 }
 
 func (m *Magnet) DrawOn(screen *ebiten.Image) {
