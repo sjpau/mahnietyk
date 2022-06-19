@@ -7,6 +7,8 @@ import (
 	_ "image/png"
 
 	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/ebitenutil"
+	"github.com/solarlune/goaseprite"
 )
 
 var FS embed.FS
@@ -17,7 +19,19 @@ var (
 	NegativeImage       *ebiten.Image
 	MagnetPositiveImage *ebiten.Image
 	MagnetNegativeImage *ebiten.Image
+	FlySprite           *goaseprite.File
+	FlyImage            *ebiten.Image
 )
+
+func LoadDynamicImages() {
+	FlySprite = goaseprite.Open("assets/img/fly.json")
+	img, _, err := ebitenutil.NewImageFromFile(FlySprite.ImagePath)
+	if err != nil {
+		panic(err)
+	}
+	FlyImage = img
+	FlySprite.Play("run")
+}
 
 func LoadStaticImages() {
 	img, _, err := image.Decode(bytes.NewReader(background_png))
@@ -49,5 +63,4 @@ func LoadStaticImages() {
 		panic(err)
 	}
 	MagnetNegativeImage = ebiten.NewImageFromImage(img)
-
 }

@@ -1,6 +1,8 @@
 package component
 
-import "github.com/hajimehoshi/ebiten"
+import (
+	"github.com/hajimehoshi/ebiten"
+)
 
 type Bubble struct {
 	Params        Object

@@ -6,7 +6,6 @@ type Object struct {
 	VX     float64
 	VY     float64
 	Alive  bool
-	CanDie bool
 	Width  int
 	Height int
 }
