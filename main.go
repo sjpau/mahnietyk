@@ -18,20 +18,32 @@ const (
 	ModeRetry
 )
 
+const (
+	maxFlies = 256
+)
+
 type Flies struct {
 	flies []*component.Fly
 	spawn int
 }
 
-func (f *Flies) Update() {
+func (f *Flies) Update(g *Game) {
+
 	for i := 0; i < f.spawn; i++ {
-		f.flies[i].Update()
+		if f.flies[i] != nil {
+			f.flies[i].Update()
+			if g.bubble.Params.CollideWith(&f.flies[i].Params) {
+				g.bubble.Params.Die()
+			}
+		}
 	}
 }
 
 func (f *Flies) DrawOn(screen *ebiten.Image) {
 	for i := 0; i < f.spawn; i++ {
-		f.flies[i].DrawOn(screen)
+		if f.flies[i] != nil {
+			f.flies[i].DrawOn(screen)
+		}
 	}
 }
 
@@ -41,6 +53,8 @@ type Game struct {
 	bubble *component.Bubble
 	magnet *component.Magnet
 	flies  Flies
+
+	score float64
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
@@ -65,7 +79,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 func (g *Game) InitObjects() {
 
 	if g.flies.flies == nil {
-		g.flies.flies = make([]*component.Fly, 19)
+		g.flies.flies = make([]*component.Fly, maxFlies)
 		g.flies.spawn = 1
 		for i := range g.flies.flies {
 			seed := rand.Intn(17)
@@ -134,14 +148,18 @@ func (g *Game) Update() error {
 		if ebiten.IsKeyPressed(ebiten.KeyK) {
 			g.bubble.Positive = true
 		}
-		if g.bubble.Params.Alive == false {
-			g.mode = ModeRetry
-		}
 		if g.bubble.Params.CollideWith(&g.magnet.Params) {
 			g.bubble.Params.Die()
 		}
+		if g.bubble.Params.Alive == false {
+			g.mode = ModeRetry
+		}
+		if int(g.score)%(100+rand.Intn(20)) == 0 && g.flies.spawn < maxFlies {
+			g.flies.spawn += 1
+		}
+		g.score += 0.9
 		g.bubble.Update(g.magnet)
-		g.flies.Update()
+		g.flies.Update(g)
 	case ModeRetry:
 		g.bubble = nil
 		g.flies.flies = nil
