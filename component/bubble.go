@@ -43,3 +43,11 @@ func (b *Bubble) Update(m *Magnet) {
 		b.Params.Die()
 	}
 }
+
+func (b *Bubble) ChangeCharge() {
+	if b.Positive {
+		b.Positive = false
+	} else {
+		b.Positive = true
+	}
+}

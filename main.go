@@ -19,7 +19,8 @@ const (
 )
 
 const (
-	maxFlies = 256
+	maxFlies  = 256
+	maxClouds = 256
 )
 
 type Flies struct {
@@ -27,23 +28,39 @@ type Flies struct {
 	spawn int
 }
 
+type Clouds struct {
+	clouds []*component.Cloud
+	spawn  int
+}
+
+func (c *Clouds) Update(g *Game) {
+	for i := 0; i < c.spawn; i++ {
+		c.clouds[i].Update()
+		if g.bubble.Params.CollideWith(&c.clouds[i].Params) {
+			g.bubble.ChangeCharge()
+		}
+	}
+}
+
+func (c *Clouds) DrawOn(screen *ebiten.Image) {
+	for i := 0; i < c.spawn; i++ {
+		c.clouds[i].DrawOn(screen)
+	}
+}
+
 func (f *Flies) Update(g *Game) {
 
 	for i := 0; i < f.spawn; i++ {
-		if f.flies[i] != nil {
-			f.flies[i].Update()
-			if g.bubble.Params.CollideWith(&f.flies[i].Params) {
-				g.bubble.Params.Die()
-			}
+		f.flies[i].Update()
+		if g.bubble.Params.CollideWith(&f.flies[i].Params) {
+			g.bubble.Params.Die()
 		}
 	}
 }
 
 func (f *Flies) DrawOn(screen *ebiten.Image) {
 	for i := 0; i < f.spawn; i++ {
-		if f.flies[i] != nil {
-			f.flies[i].DrawOn(screen)
-		}
+		f.flies[i].DrawOn(screen)
 	}
 }
 
@@ -53,12 +70,12 @@ type Game struct {
 	bubble *component.Bubble
 	magnet *component.Magnet
 	flies  Flies
-
-	score float64
+	clouds Clouds
+	score  uint64
 }
 
 func (g *Game) EventMagnetChangeCharge() {
-	if int(g.score)%(1000+rand.Intn(100)) == 0 {
+	if g.score%uint64((100+rand.Intn(1500))) == 0 {
 		if g.magnet.Positive {
 			g.magnet.Positive = false
 		} else {
@@ -67,8 +84,14 @@ func (g *Game) EventMagnetChangeCharge() {
 	}
 }
 
+func (g *Game) EventSpawnCloud() {
+	if g.score%uint64(100+rand.Intn(1000)) == 0 && g.clouds.spawn < maxClouds {
+		g.clouds.spawn += 1
+	}
+}
+
 func (g *Game) EventSpawnFly() {
-	if int(g.score)%(100+rand.Intn(20)) == 0 && g.flies.spawn < maxFlies {
+	if g.score%uint64(100+rand.Intn(20)) == 0 && g.flies.spawn < maxFlies {
 		g.flies.spawn += 1
 	}
 }
@@ -90,26 +113,48 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	g.bubble.DrawOn(screen)
 	g.magnet.DrawOn(screen)
 	g.flies.DrawOn(screen)
+	g.clouds.DrawOn(screen)
 }
 
 func (g *Game) InitObjects() {
 
 	if g.flies.flies == nil {
 		g.flies.flies = make([]*component.Fly, maxFlies)
-		g.flies.spawn = 1
+		g.flies.spawn = 0
 		for i := range g.flies.flies {
 			seed := rand.Intn(17)
 			g.flies.flies[i] = &component.Fly{
 				FlySprite: assets.FlySprite,
 				FlyImage:  assets.FlyImage,
 				Params: component.Object{
-					X:      component.ScreenWidth - component.TileSize,
+					X:      component.ScreenWidth + component.TileSize,
 					Y:      float64(component.ScreenHeight - (component.TileSize * seed)),
 					VX:     0,
 					VY:     0,
 					Alive:  true,
-					Width:  16,
-					Height: 16,
+					Width:  component.TileSize,
+					Height: component.TileSize,
+				},
+			}
+		}
+	}
+
+	if g.clouds.clouds == nil {
+		g.clouds.clouds = make([]*component.Cloud, maxClouds)
+		g.clouds.spawn = 0
+		for i := range g.clouds.clouds {
+			seed := rand.Intn(17)
+			g.clouds.clouds[i] = &component.Cloud{
+				CloudSprite: assets.CloudSprite,
+				CloudImage:  assets.CloudImage,
+				Params: component.Object{
+					X:      component.ScreenWidth - 2*component.TileSize,
+					Y:      float64(component.ScreenHeight - (component.TileSize * seed)),
+					VX:     0,
+					VY:     0,
+					Alive:  true,
+					Width:  component.TileSize,
+					Height: component.TileSize,
 				},
 			}
 		}
@@ -158,6 +203,8 @@ func (g *Game) Update() error {
 	case ModeGame:
 		assets.FlySprite.Play("run")
 		assets.FlySprite.Update(float32(1.0 / 60.0))
+		assets.CloudSprite.Play("run")
+		assets.CloudSprite.Update(float32(1.0 / 60.0))
 		if ebiten.IsKeyPressed(ebiten.KeyJ) {
 			g.bubble.Positive = false
 		}
@@ -171,13 +218,16 @@ func (g *Game) Update() error {
 			g.mode = ModeRetry
 		}
 		g.EventSpawnFly()
+		g.EventSpawnCloud()
 		g.EventMagnetChangeCharge()
-		g.score += 1
 		g.bubble.Update(g.magnet)
 		g.flies.Update(g)
+		g.clouds.Update(g)
+		g.score += 1
 	case ModeRetry:
 		g.bubble = nil
 		g.flies.flies = nil
+		g.clouds.clouds = nil
 		g.magnet = nil
 		g.InitObjects()
 		g.mode = ModeStart
