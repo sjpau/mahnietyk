@@ -148,7 +148,7 @@ func (g *Game) InitObjects() {
 				CloudSprite: assets.CloudSprite,
 				CloudImage:  assets.CloudImage,
 				Params: component.Object{
-					X:      component.ScreenWidth - 2*component.TileSize,
+					X:      component.ScreenWidth + component.TileSize,
 					Y:      float64(component.ScreenHeight - (component.TileSize * seed)),
 					VX:     0,
 					VY:     0,

@@ -22,5 +22,5 @@ func (c *Cloud) DrawOn(screen *ebiten.Image) {
 }
 
 func (c *Cloud) Update() {
-	c.Params.X -= 1
+	c.Params.X -= 0.5
 }
