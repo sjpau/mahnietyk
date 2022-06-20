@@ -57,6 +57,22 @@ type Game struct {
 	score float64
 }
 
+func (g *Game) EventMagnetChangeCharge() {
+	if int(g.score)%(1000+rand.Intn(100)) == 0 {
+		if g.magnet.Positive {
+			g.magnet.Positive = false
+		} else {
+			g.magnet.Positive = true
+		}
+	}
+}
+
+func (g *Game) EventSpawnFly() {
+	if int(g.score)%(100+rand.Intn(20)) == 0 && g.flies.spawn < maxFlies {
+		g.flies.spawn += 1
+	}
+}
+
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return component.ScreenWidth, component.ScreenHeight
 }
@@ -154,10 +170,9 @@ func (g *Game) Update() error {
 		if g.bubble.Params.Alive == false {
 			g.mode = ModeRetry
 		}
-		if int(g.score)%(100+rand.Intn(20)) == 0 && g.flies.spawn < maxFlies {
-			g.flies.spawn += 1
-		}
-		g.score += 0.9
+		g.EventSpawnFly()
+		g.EventMagnetChangeCharge()
+		g.score += 1
 		g.bubble.Update(g.magnet)
 		g.flies.Update(g)
 	case ModeRetry:
