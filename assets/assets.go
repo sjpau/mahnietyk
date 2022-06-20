@@ -2,7 +2,6 @@ package assets
 
 import (
 	"bytes"
-	"embed"
 	"image"
 	_ "image/png"
 
@@ -10,8 +9,6 @@ import (
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 	"github.com/solarlune/goaseprite"
 )
-
-var FS embed.FS
 
 var (
 	BgImage             *ebiten.Image

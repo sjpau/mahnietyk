@@ -229,6 +229,8 @@ func (g *Game) Update() error {
 		g.flies.flies = nil
 		g.clouds.clouds = nil
 		g.magnet = nil
+		g.flies.spawn = 0
+		g.clouds.spawn = 0
 		g.InitObjects()
 		g.mode = ModeStart
 	}
