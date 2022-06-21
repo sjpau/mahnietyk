@@ -56,7 +56,6 @@ func LoadDynamicImages() {
 	}
 	NegativeImage = img
 	NegativeSprite.Play("run")
-
 }
 
 func LoadStaticImages() {
