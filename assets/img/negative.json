@@ -67,7 +67,7 @@
  "meta": {
   "app": "https://github.com/LibreSprite/LibreSprite/",
   "version": "1.0-dev",
-  "image": "/home/mobyus/art/Pixel/negative.png",
+  "image": "assets/img/negative.png",
   "format": "RGBA8888",
   "size": { "w": 128, "h": 16 },
   "scale": "1",
