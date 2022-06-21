@@ -1,11 +1,14 @@
 package main
 
 import (
+	"fmt"
+	"image/color"
 	_ "image/png"
 	"math/rand"
 	"time"
 
 	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/text"
 	"github.com/theonlymoby/magnetib/assets"
 	"github.com/theonlymoby/magnetib/component"
 )
@@ -72,6 +75,7 @@ type Game struct {
 	flies  Flies
 	clouds Clouds
 	score  uint64
+	points float64
 }
 
 func (g *Game) EventMagnetChangeCharge() {
@@ -104,16 +108,26 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 	assets.LoadStaticImages()
 	assets.LoadDynamicImages()
+	assets.LoadFonts()
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
 	o := &ebiten.DrawImageOptions{}
 	o.GeoM.Scale(1, 1)
 	screen.DrawImage(assets.BgImage, o)
-	g.bubble.DrawOn(screen)
-	g.magnet.DrawOn(screen)
-	g.flies.DrawOn(screen)
-	g.clouds.DrawOn(screen)
+	pointString := fmt.Sprintf("%04f", g.points)
+	switch g.mode {
+	case ModeStart:
+		//menu goes here
+	case ModeGame:
+		g.bubble.DrawOn(screen)
+		g.magnet.DrawOn(screen)
+		g.flies.DrawOn(screen)
+		g.clouds.DrawOn(screen)
+		text.Draw(screen, pointString, assets.GameFont, component.ScreenWidth-len(pointString)*assets.FontSize, assets.FontSize, color.White)
+	case ModeRetry:
+		//retry whatever goes here
+	}
 }
 
 func (g *Game) InitObjects() {
@@ -223,6 +237,7 @@ func (g *Game) Update() error {
 		g.flies.Update(g)
 		g.clouds.Update(g)
 		g.score += 1
+		g.points += 0.000001
 	case ModeRetry:
 		g.bubble = nil
 		g.flies.flies = nil

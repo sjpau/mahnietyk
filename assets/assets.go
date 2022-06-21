@@ -8,6 +8,9 @@ import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 	"github.com/solarlune/goaseprite"
+	"golang.org/x/image/font"
+	"golang.org/x/image/font/gofont/goregular"
+	"golang.org/x/image/font/opentype"
 )
 
 var (
@@ -23,6 +26,27 @@ var (
 	CloudSprite         *goaseprite.File
 	CloudImage          *ebiten.Image
 )
+
+var (
+	GameFont font.Face
+)
+
+const (
+	dpi      = 80
+	FontSize = 12
+)
+
+func LoadFonts() {
+	f, err := opentype.Parse(goregular.TTF)
+	if err != nil {
+		panic(err)
+	}
+	GameFont, err = opentype.NewFace(f, &opentype.FaceOptions{
+		Size:    FontSize,
+		DPI:     dpi,
+		Hinting: font.HintingFull,
+	})
+}
 
 func LoadDynamicImages() {
 	FlySprite = goaseprite.Open("assets/img/fly.json")
