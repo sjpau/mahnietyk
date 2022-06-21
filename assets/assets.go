@@ -77,3 +77,15 @@ func LoadStaticImages() {
 	}
 	MagnetNegativeImage = ebiten.NewImageFromImage(img)
 }
+
+func PlayAssets() {
+	FlySprite.Play("run")
+	FlySprite.Update(float32(1.0 / 60.0))
+	CloudSprite.Play("run")
+	CloudSprite.Update(float32(1.0 / 60.0))
+	PositiveSprite.Play("run")
+	PositiveSprite.Update(float32(1.0 / 60.0))
+	NegativeSprite.Play("run")
+	NegativeSprite.Update(float32(1.0 / 60.0))
+
+}

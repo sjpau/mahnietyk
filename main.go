@@ -203,14 +203,7 @@ func (g *Game) Update() error {
 			g.mode = ModeGame
 		}
 	case ModeGame:
-		assets.FlySprite.Play("run")
-		assets.FlySprite.Update(float32(1.0 / 60.0))
-		assets.CloudSprite.Play("run")
-		assets.CloudSprite.Update(float32(1.0 / 60.0))
-		assets.PositiveSprite.Play("run")
-		assets.PositiveSprite.Update(float32(1.0 / 60.0))
-		assets.NegativeSprite.Play("run")
-		assets.NegativeSprite.Update(float32(1.0 / 60.0))
+		assets.PlayAssets()
 		if ebiten.IsKeyPressed(ebiten.KeyJ) {
 			g.bubble.Positive = false
 		}
