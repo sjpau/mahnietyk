@@ -163,9 +163,11 @@ func (g *Game) InitObjects() {
 	if g.bubble == nil {
 		g.bubble = new(component.Bubble)
 		g.bubble = &component.Bubble{
-			PositiveImage: assets.PositiveImage,
-			NegativeImage: assets.NegativeImage,
-			Positive:      true,
+			PositiveImage:  assets.PositiveImage,
+			PositiveSprite: assets.PositiveSprite,
+			NegativeImage:  assets.NegativeImage,
+			NegativeSprite: assets.NegativeSprite,
+			Positive:       true,
 			Params: component.Object{
 				X:      (component.ScreenWidth - component.TileSize) / 2 / component.TileSize,
 				Y:      (component.ScreenHeight - component.TileSize) / 2,
@@ -205,6 +207,10 @@ func (g *Game) Update() error {
 		assets.FlySprite.Update(float32(1.0 / 60.0))
 		assets.CloudSprite.Play("run")
 		assets.CloudSprite.Update(float32(1.0 / 60.0))
+		assets.PositiveSprite.Play("run")
+		assets.PositiveSprite.Update(float32(1.0 / 60.0))
+		assets.NegativeSprite.Play("run")
+		assets.NegativeSprite.Update(float32(1.0 / 60.0))
 		if ebiten.IsKeyPressed(ebiten.KeyJ) {
 			g.bubble.Positive = false
 		}

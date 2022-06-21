@@ -1,24 +1,31 @@
 package component
 
 import (
+	"image"
+
 	"github.com/hajimehoshi/ebiten"
+	"github.com/solarlune/goaseprite"
 )
 
 type Bubble struct {
-	Params        Object
-	PositiveImage *ebiten.Image
-	NegativeImage *ebiten.Image
-	Positive      bool
+	Params         Object
+	PositiveImage  *ebiten.Image
+	NegativeImage  *ebiten.Image
+	PositiveSprite *goaseprite.File
+	NegativeSprite *goaseprite.File
+	Positive       bool
 }
 
 func (b *Bubble) DrawOn(screen *ebiten.Image) {
 	o := &ebiten.DrawImageOptions{}
 	o.GeoM.Scale(1, 1)
 	o.GeoM.Translate(b.Params.X, b.Params.Y)
+	subp := b.PositiveImage.SubImage(image.Rect(b.PositiveSprite.CurrentFrameCoords()))
+	subn := b.NegativeImage.SubImage(image.Rect(b.NegativeSprite.CurrentFrameCoords()))
 	if b.Positive {
-		screen.DrawImage(b.PositiveImage, o)
+		screen.DrawImage(subp.(*ebiten.Image), o)
 	} else {
-		screen.DrawImage(b.NegativeImage, o)
+		screen.DrawImage(subn.(*ebiten.Image), o)
 	}
 }
 

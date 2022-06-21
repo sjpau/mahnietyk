@@ -14,6 +14,8 @@ var (
 	BgImage             *ebiten.Image
 	PositiveImage       *ebiten.Image
 	NegativeImage       *ebiten.Image
+	PositiveSprite      *goaseprite.File
+	NegativeSprite      *goaseprite.File
 	MagnetPositiveImage *ebiten.Image
 	MagnetNegativeImage *ebiten.Image
 	FlySprite           *goaseprite.File
@@ -38,6 +40,23 @@ func LoadDynamicImages() {
 	}
 	CloudImage = img
 	CloudSprite.Play("run")
+
+	PositiveSprite = goaseprite.Open("assets/img/positive.json")
+	img, _, err = ebitenutil.NewImageFromFile(PositiveSprite.ImagePath)
+	if err != nil {
+		panic(err)
+	}
+	PositiveImage = img
+	PositiveSprite.Play("run")
+
+	NegativeSprite = goaseprite.Open("assets/img/negative.json")
+	img, _, err = ebitenutil.NewImageFromFile(NegativeSprite.ImagePath)
+	if err != nil {
+		panic(err)
+	}
+	NegativeImage = img
+	NegativeSprite.Play("run")
+
 }
 
 func LoadStaticImages() {
