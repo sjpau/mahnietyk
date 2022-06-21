@@ -146,8 +146,8 @@ func (g *Game) InitObjects() {
 					VX:     0,
 					VY:     0,
 					Alive:  true,
-					Width:  component.TileSize,
-					Height: component.TileSize,
+					Width:  component.TileSize * 1.5,
+					Height: component.TileSize * 1.5,
 				},
 			}
 		}
@@ -167,8 +167,8 @@ func (g *Game) InitObjects() {
 					VX:     0,
 					VY:     0,
 					Alive:  true,
-					Width:  component.TileSize,
-					Height: component.TileSize,
+					Width:  component.TileSize * 1.5,
+					Height: component.TileSize * 1.5,
 				},
 			}
 		}
@@ -245,6 +245,8 @@ func (g *Game) Update() error {
 		g.magnet = nil
 		g.flies.spawn = 0
 		g.clouds.spawn = 0
+		g.score = 0
+		g.points = 0
 		g.InitObjects()
 		g.mode = ModeStart
 	}

@@ -16,7 +16,7 @@ type Cloud struct {
 func (c *Cloud) DrawOn(screen *ebiten.Image) {
 	o := &ebiten.DrawImageOptions{}
 	sub := c.CloudImage.SubImage(image.Rect(c.CloudSprite.CurrentFrameCoords()))
-	o.GeoM.Scale(1, 1)
+	o.GeoM.Scale(2, 2)
 	o.GeoM.Translate(c.Params.X, c.Params.Y)
 	screen.DrawImage(sub.(*ebiten.Image), o)
 }

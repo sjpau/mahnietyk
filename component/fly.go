@@ -16,7 +16,7 @@ type Fly struct {
 func (f *Fly) DrawOn(screen *ebiten.Image) {
 	o := &ebiten.DrawImageOptions{}
 	sub := f.FlyImage.SubImage(image.Rect(f.FlySprite.CurrentFrameCoords()))
-	o.GeoM.Scale(1, 1)
+	o.GeoM.Scale(2, 2)
 	o.GeoM.Translate(f.Params.X, f.Params.Y)
 	screen.DrawImage(sub.(*ebiten.Image), o)
 }
