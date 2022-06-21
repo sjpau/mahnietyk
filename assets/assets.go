@@ -66,18 +66,6 @@ func LoadStaticImages() {
 	}
 	BgImage = ebiten.NewImageFromImage(img)
 
-	img, _, err = image.Decode(bytes.NewReader(negative_png))
-	if err != nil {
-		panic(err)
-	}
-	NegativeImage = ebiten.NewImageFromImage(img)
-
-	img, _, err = image.Decode(bytes.NewReader(positive_png))
-	if err != nil {
-		panic(err)
-	}
-	PositiveImage = ebiten.NewImageFromImage(img)
-
 	img, _, err = image.Decode(bytes.NewReader(magnetpositive_png))
 	if err != nil {
 		panic(err)
