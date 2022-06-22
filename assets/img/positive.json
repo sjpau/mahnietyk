@@ -62,6 +62,30 @@
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
     "sourceSize": { "w": 16, "h": 16 },
     "duration": 100
+   },
+   "positive 8.ase": {
+    "frame": { "x": 128, "y": 0, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   "positive 9.ase": {
+    "frame": { "x": 144, "y": 0, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   "positive 10.ase": {
+    "frame": { "x": 160, "y": 0, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
    }
  },
  "meta": {
@@ -69,16 +93,15 @@
   "version": "1.0-dev",
   "image": "assets/img/positive.png",
   "format": "RGBA8888",
-  "size": { "w": 128, "h": 16 },
+  "size": { "w": 176, "h": 16 },
   "scale": "1",
   "frameTags": [
-   { "name": "run", "from": 0, "to": 7, "direction": "forward" }
+   { "name": "run", "from": 0, "to": 10, "direction": "forward" }
   ],
   "layers": [
-   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" },
-   { "name": "Layer 3", "opacity": 255, "blendMode": "normal" },
    { "name": "Layer 2", "opacity": 255, "blendMode": "normal" },
-   { "name": "Layer 4", "opacity": 99, "blendMode": "normal" }
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" },
+   { "name": "Layer 3", "opacity": 255, "blendMode": "normal" }
   ]
  }
 }
