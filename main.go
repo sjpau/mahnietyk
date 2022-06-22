@@ -76,6 +76,7 @@ type Game struct {
 	clouds Clouds
 	score  uint64
 	points float64
+	hard   bool
 }
 
 func (g *Game) EventMagnetChangeCharge() {
@@ -112,13 +113,26 @@ func init() {
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
+
+	var title []string
+	var output []string
+
 	o := &ebiten.DrawImageOptions{}
 	o.GeoM.Scale(1, 1)
 	screen.DrawImage(assets.BgImage, o)
 	pointString := fmt.Sprintf("%04f", g.points)
 	switch g.mode {
 	case ModeStart:
-		//menu goes here
+		title = []string{"MAHNIETYK"}
+		output = []string{"", "", "J - gain negative charge", "", "K - gain positive charge", "", "", "Press SPACE to start"}
+		for i, l := range title {
+			x := (component.ScreenWidth - len(l)*assets.FontSize) / 2
+			text.Draw(screen, l, assets.GameFont, x, (i+4)*assets.FontSize, color.White)
+		}
+		for i, l := range output {
+			x := (component.ScreenWidth-len(l)*assets.FontSize)/2 + 2*component.TileSize
+			text.Draw(screen, l, assets.GameFont, x, (i+4)*assets.FontSize, color.White)
+		}
 	case ModeGame:
 		g.bubble.DrawOn(screen)
 		g.magnet.DrawOn(screen)
@@ -213,6 +227,7 @@ func (g *Game) Update() error {
 	g.InitObjects()
 	switch g.mode {
 	case ModeStart:
+
 		if ebiten.IsKeyPressed(ebiten.KeySpace) {
 			g.mode = ModeGame
 		}
@@ -231,11 +246,11 @@ func (g *Game) Update() error {
 			g.mode = ModeRetry
 		}
 		g.EventSpawnFly()
+		g.flies.Update(g)
 		g.EventSpawnCloud()
+		g.clouds.Update(g)
 		g.EventMagnetChangeCharge()
 		g.bubble.Update(g.magnet)
-		g.flies.Update(g)
-		g.clouds.Update(g)
 		g.score += 1
 		g.points += 0.000001
 	case ModeRetry:
