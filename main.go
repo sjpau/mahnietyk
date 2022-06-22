@@ -9,8 +9,8 @@ import (
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/text"
-	"github.com/theonlymoby/magnetib/assets"
-	"github.com/theonlymoby/magnetib/component"
+	"github.com/theonlymoby/mahnietyk/assets"
+	"github.com/theonlymoby/mahnietyk/component"
 )
 
 type Mode int
