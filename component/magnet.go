@@ -1,12 +1,17 @@
 package component
 
-import "github.com/hajimehoshi/ebiten"
+import (
+	"image"
+
+	"github.com/hajimehoshi/ebiten"
+	"github.com/solarlune/goaseprite"
+)
 
 type Magnet struct {
-	Params              Object
-	MagnetPositiveImage *ebiten.Image
-	MagnetNegativeImage *ebiten.Image
-	Positive            bool
+	Params       Object
+	MagnetImage  *ebiten.Image
+	MagnetSprite *goaseprite.File
+	Positive     bool
 }
 
 func (m *Magnet) DrawOn(screen *ebiten.Image) {
@@ -14,9 +19,12 @@ func (m *Magnet) DrawOn(screen *ebiten.Image) {
 	o.GeoM.Scale(1, -1)
 	o.GeoM.Translate(0, 16)
 	o.GeoM.Translate(m.Params.X, m.Params.Y)
+	sub := m.MagnetImage.SubImage(image.Rect(m.MagnetSprite.CurrentFrameCoords()))
 	if m.Positive {
-		screen.DrawImage(m.MagnetPositiveImage, o)
+		screen.DrawImage(sub.(*ebiten.Image), o)
+		m.MagnetSprite.Play("positive")
 	} else {
-		screen.DrawImage(m.MagnetNegativeImage, o)
+		screen.DrawImage(sub.(*ebiten.Image), o)
+		m.MagnetSprite.Play("negative")
 	}
 }

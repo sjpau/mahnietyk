@@ -194,9 +194,9 @@ func (g *Game) InitObjects() {
 	}
 	if g.magnet == nil {
 		g.magnet = &component.Magnet{
-			MagnetPositiveImage: assets.MagnetPositiveImage,
-			MagnetNegativeImage: assets.MagnetNegativeImage,
-			Positive:            true,
+			MagnetImage:  assets.MagnetImage,
+			MagnetSprite: assets.MagnetSprite,
+			Positive:     true,
 			Params: component.Object{
 				X:      (component.ScreenWidth - component.TileSize) / 2 / component.TileSize,
 				Y:      (component.ScreenHeight - component.TileSize) / 2 / component.TileSize,

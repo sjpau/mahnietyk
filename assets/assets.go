@@ -14,17 +14,17 @@ import (
 )
 
 var (
-	BgImage             *ebiten.Image
-	PositiveImage       *ebiten.Image
-	NegativeImage       *ebiten.Image
-	PositiveSprite      *goaseprite.File
-	NegativeSprite      *goaseprite.File
-	MagnetPositiveImage *ebiten.Image
-	MagnetNegativeImage *ebiten.Image
-	FlySprite           *goaseprite.File
-	FlyImage            *ebiten.Image
-	CloudSprite         *goaseprite.File
-	CloudImage          *ebiten.Image
+	BgImage        *ebiten.Image
+	PositiveImage  *ebiten.Image
+	NegativeImage  *ebiten.Image
+	PositiveSprite *goaseprite.File
+	NegativeSprite *goaseprite.File
+	MagnetImage    *ebiten.Image
+	MagnetSprite   *goaseprite.File
+	FlySprite      *goaseprite.File
+	FlyImage       *ebiten.Image
+	CloudSprite    *goaseprite.File
+	CloudImage     *ebiten.Image
 )
 
 var (
@@ -57,6 +57,13 @@ func LoadDynamicImages() {
 	FlyImage = img
 	FlySprite.Play("run")
 
+	MagnetSprite = goaseprite.Open("assets/img/magnet.json")
+	img, _, err = ebitenutil.NewImageFromFile(MagnetSprite.ImagePath)
+	if err != nil {
+		panic(err)
+	}
+	MagnetImage = img
+
 	CloudSprite = goaseprite.Open("assets/img/cloud.json")
 	img, _, err = ebitenutil.NewImageFromFile(CloudSprite.ImagePath)
 	if err != nil {
@@ -88,20 +95,20 @@ func LoadStaticImages() {
 		panic(err)
 	}
 	BgImage = ebiten.NewImageFromImage(img)
+	/*
+		img, _, err = image.Decode(bytes.NewReader(magnetpositive_png))
+		if err != nil {
+			panic(err)
+		}
+		MagnetPositiveImage = ebiten.NewImageFromImage(img)
 
-	img, _, err = image.Decode(bytes.NewReader(magnetpositive_png))
-	if err != nil {
-		panic(err)
-	}
-	MagnetPositiveImage = ebiten.NewImageFromImage(img)
-
-	img, _, err = image.Decode(bytes.NewReader(magnetnegative_png))
-	if err != nil {
-		panic(err)
-	}
-	MagnetNegativeImage = ebiten.NewImageFromImage(img)
+		img, _, err = image.Decode(bytes.NewReader(magnetnegative_png))
+		if err != nil {
+			panic(err)
+		}
+		MagnetNegativeImage = ebiten.NewImageFromImage(img)
+	*/
 }
-
 func PlayAssets() {
 	FlySprite.Play("run")
 	FlySprite.Update(float32(1.0 / 60.0))
@@ -111,5 +118,6 @@ func PlayAssets() {
 	PositiveSprite.Update(float32(1.0 / 60.0))
 	NegativeSprite.Play("run")
 	NegativeSprite.Update(float32(1.0 / 60.0))
+	MagnetSprite.Update(float32(1.0 / 60.0))
 
 }
