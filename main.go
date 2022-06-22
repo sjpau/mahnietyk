@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"image/color"
 	_ "image/png"
 	"math/rand"
@@ -76,7 +75,6 @@ type Game struct {
 	clouds Clouds
 	score  uint64
 	points float64
-	hard   bool
 }
 
 func (g *Game) EventMagnetChangeCharge() {
@@ -120,7 +118,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	o := &ebiten.DrawImageOptions{}
 	o.GeoM.Scale(1, 1)
 	screen.DrawImage(assets.BgImage, o)
-	pointString := fmt.Sprintf("%04f", g.points)
+	//pointString := fmt.Sprintf("%04f", g.points)
 	switch g.mode {
 	case ModeStart:
 		title = []string{"MAHNIETYK"}
@@ -138,7 +136,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		g.magnet.DrawOn(screen)
 		g.flies.DrawOn(screen)
 		g.clouds.DrawOn(screen)
-		text.Draw(screen, pointString, assets.GameFont, component.ScreenWidth-len(pointString)*assets.FontSize, assets.FontSize, color.White)
+		//text.Draw(screen, pointString, assets.GameFont, component.ScreenWidth-len(pointString)*assets.FontSize, assets.FontSize, color.White)
 	case ModeRetry:
 		//retry whatever goes here
 	}
@@ -227,7 +225,6 @@ func (g *Game) Update() error {
 	g.InitObjects()
 	switch g.mode {
 	case ModeStart:
-
 		if ebiten.IsKeyPressed(ebiten.KeySpace) {
 			g.mode = ModeGame
 		}
