@@ -251,13 +251,9 @@ func (g *Game) Update() error {
 		assets.PlayAssets()
 		if ebiten.IsKeyPressed(ebiten.KeyJ) {
 			g.bubble.Positive = false
-			assets.BubbleCharge.Rewind()
-			assets.BubbleCharge.Play()
 		}
 		if ebiten.IsKeyPressed(ebiten.KeyK) {
 			g.bubble.Positive = true
-			assets.BubbleCharge.Rewind()
-			assets.BubbleCharge.Play()
 		}
 		if g.bubble.Params.CollideWith(&g.magnet.Params) {
 			g.bubble.Params.Die()
@@ -292,5 +288,6 @@ func (g *Game) Update() error {
 }
 
 func main() {
+	ebiten.SetMaxTPS(60)
 	ebiten.RunGame(&Game{})
 }
