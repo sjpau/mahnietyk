@@ -5,6 +5,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/solarlune/goaseprite"
+	"github.com/theonlymoby/mahnietyk/assets"
 )
 
 type Bubble struct {
@@ -57,4 +58,6 @@ func (b *Bubble) ChangeCharge() {
 	} else {
 		b.Positive = true
 	}
+	assets.BubbleCharge.Rewind()
+	assets.BubbleCharge.Play()
 }

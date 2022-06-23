@@ -79,6 +79,8 @@ type Game struct {
 
 func (g *Game) EventMagnetChangeCharge() {
 	if g.score%uint64((100+rand.Intn(1500))) == 0 {
+		assets.MagnetCharge.Rewind()
+		assets.MagnetCharge.Play()
 		if g.magnet.Positive {
 			g.magnet.Positive = false
 		} else {
@@ -99,6 +101,22 @@ func (g *Game) EventSpawnFly() {
 	}
 }
 
+func (g *Game) EventAudioThunder() {
+
+	if g.score%uint64((100+rand.Intn(2200))) == 0 {
+		assets.CloudThunder.Rewind()
+		assets.CloudThunder.Play()
+	}
+}
+
+func (g *Game) EventAudioGull() {
+
+	if g.score%uint64((100+rand.Intn(1000))) == 0 {
+		assets.FlyGull.Rewind()
+		assets.FlyGull.Play()
+	}
+}
+
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return component.ScreenWidth, component.ScreenHeight
 }
@@ -107,6 +125,7 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 	assets.LoadStaticImages()
 	assets.LoadDynamicImages()
+	assets.LoadAudio()
 	assets.LoadFonts()
 }
 
@@ -232,9 +251,13 @@ func (g *Game) Update() error {
 		assets.PlayAssets()
 		if ebiten.IsKeyPressed(ebiten.KeyJ) {
 			g.bubble.Positive = false
+			assets.BubbleCharge.Rewind()
+			assets.BubbleCharge.Play()
 		}
 		if ebiten.IsKeyPressed(ebiten.KeyK) {
 			g.bubble.Positive = true
+			assets.BubbleCharge.Rewind()
+			assets.BubbleCharge.Play()
 		}
 		if g.bubble.Params.CollideWith(&g.magnet.Params) {
 			g.bubble.Params.Die()
@@ -242,6 +265,9 @@ func (g *Game) Update() error {
 		if g.bubble.Params.Alive == false {
 			g.mode = ModeRetry
 		}
+
+		g.EventAudioGull()
+		g.EventAudioThunder()
 		g.EventSpawnFly()
 		g.flies.Update(g)
 		g.EventSpawnCloud()

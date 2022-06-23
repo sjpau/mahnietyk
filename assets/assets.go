@@ -6,6 +6,8 @@ import (
 	_ "image/png"
 
 	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/audio"
+	"github.com/hajimehoshi/ebiten/audio/wav"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 	"github.com/solarlune/goaseprite"
 	"golang.org/x/image/font"
@@ -28,13 +30,69 @@ var (
 )
 
 var (
+	AudioContext *audio.Context
+	BubbleCharge *audio.Player
+	BubbleHit    *audio.Player
+	MagnetCharge *audio.Player
+	FlyGull      *audio.Player
+	CloudThunder *audio.Player
+)
+
+var (
 	GameFont font.Face
 )
 
 const (
-	dpi      = 80
-	FontSize = 12
+	dpi        = 80
+	FontSize   = 12
+	SampleRate = 48000
 )
+
+func LoadAudio() {
+	AudioContext = audio.NewContext(SampleRate)
+
+	temp, err := wav.DecodeWithSampleRate(SampleRate, bytes.NewReader(bubble_charge_wav))
+	if err != nil {
+		panic(err)
+	}
+	BubbleCharge, err = AudioContext.NewPlayer(temp)
+	if err != nil {
+		panic(err)
+	}
+	temp, err = wav.DecodeWithSampleRate(SampleRate, bytes.NewReader(magnet_charge_wav))
+	if err != nil {
+		panic(err)
+	}
+	MagnetCharge, err = AudioContext.NewPlayer(temp)
+	if err != nil {
+		panic(err)
+	}
+
+	temp, err = wav.DecodeWithSampleRate(SampleRate, bytes.NewReader(bubble_hit_wav))
+	if err != nil {
+		panic(err)
+	}
+	BubbleHit, err = AudioContext.NewPlayer(temp)
+	if err != nil {
+		panic(err)
+	}
+	temp, err = wav.DecodeWithSampleRate(SampleRate, bytes.NewReader(gull_wav))
+	if err != nil {
+		panic(err)
+	}
+	FlyGull, err = AudioContext.NewPlayer(temp)
+	if err != nil {
+		panic(err)
+	}
+	temp, err = wav.DecodeWithSampleRate(SampleRate, bytes.NewReader(thunder_wav))
+	if err != nil {
+		panic(err)
+	}
+	CloudThunder, err = AudioContext.NewPlayer(temp)
+	if err != nil {
+		panic(err)
+	}
+}
 
 func LoadFonts() {
 	f, err := opentype.Parse(goregular.TTF)
@@ -95,20 +153,8 @@ func LoadStaticImages() {
 		panic(err)
 	}
 	BgImage = ebiten.NewImageFromImage(img)
-	/*
-		img, _, err = image.Decode(bytes.NewReader(magnetpositive_png))
-		if err != nil {
-			panic(err)
-		}
-		MagnetPositiveImage = ebiten.NewImageFromImage(img)
-
-		img, _, err = image.Decode(bytes.NewReader(magnetnegative_png))
-		if err != nil {
-			panic(err)
-		}
-		MagnetNegativeImage = ebiten.NewImageFromImage(img)
-	*/
 }
+
 func PlayAssets() {
 	FlySprite.Play("run")
 	FlySprite.Update(float32(1.0 / 60.0))

@@ -1,5 +1,7 @@
 package component
 
+import "github.com/theonlymoby/mahnietyk/assets"
+
 type Object struct {
 	X      float64
 	Y      float64
@@ -22,4 +24,6 @@ func (o *Object) CollideWith(n *Object) bool {
 
 func (o *Object) Die() {
 	o.Alive = false
+	assets.BubbleHit.Rewind()
+	assets.BubbleHit.Play()
 }
