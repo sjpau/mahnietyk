@@ -1,13 +1,11 @@
 package main
 
 import (
-	"image/color"
 	_ "image/png"
 	"math/rand"
 	"time"
 
 	"github.com/hajimehoshi/ebiten"
-	"github.com/hajimehoshi/ebiten/text"
 	"github.com/theonlymoby/mahnietyk/assets"
 	"github.com/theonlymoby/mahnietyk/component"
 )
@@ -126,36 +124,21 @@ func init() {
 	assets.LoadStaticImages()
 	assets.LoadDynamicImages()
 	assets.LoadAudio()
-	assets.LoadFonts()
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
 
-	var title []string
-	var output []string
-
 	o := &ebiten.DrawImageOptions{}
 	o.GeoM.Scale(1, 1)
 	screen.DrawImage(assets.BgImage, o)
-	//pointString := fmt.Sprintf("%04f", g.points)
 	switch g.mode {
 	case ModeStart:
-		title = []string{"MAHNIETYK"}
-		output = []string{"", "", "J - gain negative charge", "", "K - gain positive charge", "", "", "Press SPACE to start"}
-		for i, l := range title {
-			x := (component.ScreenWidth - len(l)*assets.FontSize) / 2
-			text.Draw(screen, l, assets.GameFont, x, (i+4)*assets.FontSize, color.White)
-		}
-		for i, l := range output {
-			x := (component.ScreenWidth-len(l)*assets.FontSize)/2 + 2*component.TileSize
-			text.Draw(screen, l, assets.GameFont, x, (i+4)*assets.FontSize, color.White)
-		}
+		screen.DrawImage(assets.MenuImage, o)
 	case ModeGame:
 		g.bubble.DrawOn(screen)
 		g.magnet.DrawOn(screen)
 		g.flies.DrawOn(screen)
 		g.clouds.DrawOn(screen)
-		//text.Draw(screen, pointString, assets.GameFont, component.ScreenWidth-len(pointString)*assets.FontSize, assets.FontSize, color.White)
 	case ModeRetry:
 		//retry whatever goes here
 	}
@@ -249,7 +232,6 @@ func (g *Game) Update() error {
 			g.mode = ModeGame
 		}
 	case ModeGame:
-		assets.Theme.Rewind()
 		if ebiten.IsKeyPressed(ebiten.KeyJ) {
 			g.bubble.Positive = false
 		}

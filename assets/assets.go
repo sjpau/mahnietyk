@@ -10,13 +10,11 @@ import (
 	"github.com/hajimehoshi/ebiten/audio/wav"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 	"github.com/solarlune/goaseprite"
-	"golang.org/x/image/font"
-	"golang.org/x/image/font/gofont/goregular"
-	"golang.org/x/image/font/opentype"
 )
 
 var (
 	BgImage        *ebiten.Image
+	MenuImage      *ebiten.Image
 	PositiveImage  *ebiten.Image
 	NegativeImage  *ebiten.Image
 	PositiveSprite *goaseprite.File
@@ -38,13 +36,7 @@ var (
 	CloudThunder *audio.Player
 )
 
-var (
-	GameFont font.Face
-)
-
 const (
-	dpi        = 80
-	FontSize   = 12
 	SampleRate = 48000
 )
 
@@ -94,18 +86,6 @@ func LoadAudio() {
 	}
 }
 
-func LoadFonts() {
-	f, err := opentype.Parse(goregular.TTF)
-	if err != nil {
-		panic(err)
-	}
-	GameFont, err = opentype.NewFace(f, &opentype.FaceOptions{
-		Size:    FontSize,
-		DPI:     dpi,
-		Hinting: font.HintingFull,
-	})
-}
-
 func LoadDynamicImages() {
 	FlySprite = goaseprite.Open("assets/img/fly.json")
 	img, _, err := ebitenutil.NewImageFromFile(FlySprite.ImagePath)
@@ -153,6 +133,12 @@ func LoadStaticImages() {
 		panic(err)
 	}
 	BgImage = ebiten.NewImageFromImage(img)
+
+	img, _, err = image.Decode(bytes.NewReader(menu_png))
+	if err != nil {
+		panic(err)
+	}
+	MenuImage = ebiten.NewImageFromImage(img)
 }
 
 func PlayAssets() {
