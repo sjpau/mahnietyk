@@ -8,3 +8,5 @@ In order to compile the game yourself you need to install the dependencies first
 
 Use `go get [dependency]` to install them.
 After it's done use `go install github.com/theonlymoby/mahnietyk@latest`
+
+Should any issues occur you can also use `go get github.com/theonlymoby/mahnietyk` and build manually `go build main.go`
