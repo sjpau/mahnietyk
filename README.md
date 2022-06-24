@@ -7,4 +7,4 @@ In order to compile the game yourself you need to install the dependencies first
 * github.com/solarlune/goaseprite - Aseprite JSON parser for Ebitengine
 
 Use `go get [dependency]` to install them.
-After it's done use 'go install github.com/theonlymoby/mahnietyk@latest'
+After it's done use `go install github.com/theonlymoby/mahnietyk@latest`
