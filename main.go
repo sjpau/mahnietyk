@@ -78,7 +78,7 @@ type Game struct {
 }
 
 func (g *Game) EventMagnetChangeCharge() {
-	if g.score%uint64((100+rand.Intn(1500))) == 0 {
+	if g.score != 0 && g.score%uint64((100+rand.Intn(1500))) == 0 {
 		assets.MagnetCharge.Rewind()
 		assets.MagnetCharge.Play()
 		if g.magnet.Positive {
@@ -103,7 +103,7 @@ func (g *Game) EventSpawnFly() {
 
 func (g *Game) EventAudioThunder() {
 
-	if g.score%uint64((100+rand.Intn(2200))) == 0 {
+	if g.score != 0 && g.score%uint64((100+rand.Intn(2200))) == 0 {
 		assets.CloudThunder.Rewind()
 		assets.CloudThunder.Play()
 	}
@@ -111,7 +111,7 @@ func (g *Game) EventAudioThunder() {
 
 func (g *Game) EventAudioGull() {
 
-	if g.score%uint64((100+rand.Intn(1000))) == 0 {
+	if g.score != 0 && g.score%uint64((100+rand.Intn(1000))) == 0 {
 		assets.FlyGull.Rewind()
 		assets.FlyGull.Play()
 	}
@@ -242,13 +242,14 @@ func (g *Game) InitObjects() {
 func (g *Game) Update() error {
 
 	g.InitObjects()
+	assets.PlayAssets()
 	switch g.mode {
 	case ModeStart:
 		if ebiten.IsKeyPressed(ebiten.KeySpace) {
 			g.mode = ModeGame
 		}
 	case ModeGame:
-		assets.PlayAssets()
+		assets.Theme.Rewind()
 		if ebiten.IsKeyPressed(ebiten.KeyJ) {
 			g.bubble.Positive = false
 		}
