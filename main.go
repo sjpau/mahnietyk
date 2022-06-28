@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/hajimehoshi/ebiten"
-	"github.com/theonlymoby/mahnietyk/assets"
-	"github.com/theonlymoby/mahnietyk/component"
+	"github.com/sjpau/mahnietyk/assets"
+	"github.com/sjpau/mahnietyk/component"
 )
 
 type Mode int
