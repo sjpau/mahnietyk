@@ -1,6 +1,6 @@
 package component
 
-import "github.com/theonlymoby/mahnietyk/assets"
+import "github.com/sjpau/mahnietyk/assets"
 
 type Object struct {
 	X      float64
