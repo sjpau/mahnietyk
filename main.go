@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/sjpau/mahnietyk/assets"
 	"github.com/sjpau/mahnietyk/component"
 )
