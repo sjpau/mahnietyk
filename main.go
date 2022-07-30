@@ -272,5 +272,6 @@ func (g *Game) Update() error {
 
 func main() {
 	ebiten.SetMaxTPS(60)
+	ebiten.SetWindowResizable(true)
 	ebiten.RunGame(&Game{})
 }
